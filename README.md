@@ -1,2 +1,2 @@
-# simonyorke.github.io
+# yorkedesign.github.io
 My portfolio website
