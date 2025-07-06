@@ -3883,19 +3883,21 @@ input, select, textarea {
 
 /* Custom overrides */
 
+/* Unified Dark Section Fixes */
+#intro,
+#intro *,
 .wrapper,
-.spotlight {
-    background-color: #1d2233;
-    color: #ffffff;
-}
-.wrapper h1, .wrapper h2, .wrapper h3, .wrapper h4, .wrapper h5, .wrapper h6,
-.wrapper a, .wrapper strong, .wrapper b,
-.spotlight h1, .spotlight h2, .spotlight h3, .spotlight h4, .spotlight h5, .spotlight h6,
-.spotlight a, .spotlight strong, .spotlight b {
-    color: #ffffff;
+.wrapper *,
+.spotlight,
+.spotlight *,
+#footer,
+#footer *,
+.split.style1 .content,
+.split.style1 .content * {
+    color: #ffffff !important;
 }
 
-
+/* Button Styling Fix */
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
     background-color: #1d2233;
     color: #ffffff;
@@ -3904,4 +3906,10 @@ input, select, textarea {
 .button:hover, button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
     background-color: #ffffff;
     color: #1d2233;
+}
+
+/* Form Placeholder Color */
+input::placeholder,
+textarea::placeholder {
+    color: #999999;
 }
