@@ -157,8 +157,8 @@ input, select, textarea {
 		}
 
 	body {
-		background-color: #ffffff;
-		color: #000000;
+    		background-color: #1d2233;  /* matte Red Bull Racing blue */
+    		color: #ffffff;             /* white text for contrast */
 	}
 
 	body, input, select, textarea {
