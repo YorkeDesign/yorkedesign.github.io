@@ -157,8 +157,8 @@ input, select, textarea {
 		}
 
 	body {
-    		background-color: #ffffff;
-    		color: #000000;
+		background-color: #ffffff;
+		color: #000000;
 	}
 
 	body, input, select, textarea {
@@ -1971,7 +1971,7 @@ input, select, textarea {
 			input[type="button"].primary:hover,
 			button.primary:hover,
 			.button.primary:hover {
-				background-color: #93ffe7;
+				background-color: #1d2233;
 			}
 
 			input[type="submit"].primary:active,
@@ -3880,3 +3880,28 @@ input, select, textarea {
 		}
 
 	}
+
+/* Custom overrides */
+
+.wrapper,
+.spotlight {
+    background-color: #1d2233;
+    color: #ffffff;
+}
+.wrapper h1, .wrapper h2, .wrapper h3, .wrapper h4, .wrapper h5, .wrapper h6,
+.wrapper a, .wrapper strong, .wrapper b,
+.spotlight h1, .spotlight h2, .spotlight h3, .spotlight h4, .spotlight h5, .spotlight h6,
+.spotlight a, .spotlight strong, .spotlight b {
+    color: #ffffff;
+}
+
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    background-color: #1d2233;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+.button:hover, button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
+    background-color: #ffffff;
+    color: #1d2233;
+}
