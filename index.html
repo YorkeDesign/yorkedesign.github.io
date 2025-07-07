@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yorke Labs — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --glass-bg: rgba(255, 255, 255, 0.07);
-      --glass-border: rgba(255, 255, 255, 0.2);
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.14);
       --text-color: #ffffff;
-      --accent: #ffd700; /* Red Bull yellow for subtle accent */
+      --accent: #ffd700; /* Red Bull yellow */
+      --bg-gradient: radial-gradient(circle at 30% 30%, #283046 0%, #141824 100%);
     }
 
     * {
@@ -22,7 +23,7 @@
     body, html {
       height: 100%;
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(ellipse at top, #1d2233 0%, #0e101a 100%);
+      background: var(--bg-gradient);
       color: var(--text-color);
       display: flex;
       align-items: center;
@@ -30,28 +31,31 @@
       overflow: hidden;
     }
 
-    .glass-card {
+    .glass-container {
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 2.5rem 3rem;
+      border-radius: 24px;
+      padding: 3rem 4rem;
       text-align: center;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
       max-width: 90%;
-      animation: fadeIn 1.5s ease-out;
+      box-shadow: 0 80px 100px rgba(0, 0, 0, 0.35), 0 0 60px rgba(255, 255, 255, 0.06);
+      position: relative;
+      z-index: 10;
     }
 
     h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
       margin-bottom: 1rem;
       font-weight: 700;
+      letter-spacing: -0.5px;
     }
 
     p {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       opacity: 0.8;
-      margin-bottom: 0.5rem;
+      font-weight: 400;
     }
 
     .dot {
@@ -60,8 +64,19 @@
       height: 10px;
       background-color: var(--accent);
       border-radius: 50%;
-      margin-top: 1rem;
+      margin-top: 2rem;
       animation: pulse 1.8s infinite;
+    }
+
+    .bg-glow {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%);
+      animation: rotateGlow 12s linear infinite;
+      z-index: 0;
     }
 
     @keyframes pulse {
@@ -70,17 +85,32 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes rotateGlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .glass-container {
+        padding: 2rem;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="glass-card">
+  <div class="bg-glow"></div>
+  <div class="glass-container">
     <h1>Yorke Labs</h1>
-    <p>Something exciting is coming.</p>
-    <p>Check back soon for the full experience.</p>
+    <p>We’re crafting something extraordinary.</p>
+    <p>Please check back soon.</p>
     <div class="dot"></div>
   </div>
 </body>
