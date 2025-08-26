@@ -1,91 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yorke Labs — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #f4f6f8, #e6e9ef);
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 2rem;
-    }
-
-    .card {
-      background: linear-gradient(145deg, #284365, #324c6e);
-      color: #f5f5f7;
-      padding: 3rem 3.5rem;
-      border-radius: 2rem;
-      box-shadow: 0 60px 120px rgba(0, 0, 0, 0.45);
-      text-align: center;
-      width: 100%;
-      max-width: 480px;
-      transition: transform 0.6s ease, box-shadow 0.6s ease;
-      transform: translateY(40px);
-      opacity: 0;
-      animation: floatIn 1.2s ease forwards;
-    }
-
-    @keyframes floatIn {
-      from {
-        transform: translateY(100px) scale(0.95);
-        opacity: 0;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yorke Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      :root { color-scheme: light; }
+      body { margin: 0; background: white; }
+      #brand-yorke { font-size: clamp(42px, 9vw, 90px); }
+      #brand-labs  { font-size: clamp(12px, 1.8vw, 18px); }
+      .invite-input {
+        width: min(26vw, 288px);
+        max-width: 90vw;
+        box-sizing: border-box;
       }
-      to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
+      @media (max-width: 480px) {
+        .invite-input { width: 80vw; }
       }
-    }
-
-    .card:hover {
-      transform: scale(1.08);
-      box-shadow: 0 80px 140px rgba(0, 0, 0, 0.5);
-    }
-
-    h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      margin-bottom: 1.2rem;
-    }
-
-    p {
-      font-size: 1.3rem;
-      font-weight: 400;
-      color: #e0e0e0;
-    }
-
-    @media (max-width: 600px) {
-      .card {
-        padding: 2rem;
-        border-radius: 1.5rem;
-        max-width: 85%;
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+      function YorkeLabsSite() {
+        const [showInfo, setShowInfo] = useState(false);
+        const [revealYorke, setRevealYorke] = useState(false);
+        const [revealLabs, setRevealLabs] = useState(false);
+        const [revealInfoBtn, setRevealInfoBtn] = useState(false);
+        useEffect(() => {
+          const yorkeTimer = window.setTimeout(() => setRevealYorke(true), 0);
+          const labsTimer  = window.setTimeout(() => setRevealLabs(true), 1000);
+          return () => { window.clearTimeout(yorkeTimer); window.clearTimeout(labsTimer); };
+        }, []);
+        useEffect(() => {
+          if (!revealLabs) return;
+          const infoTimer = window.setTimeout(() => setRevealInfoBtn(true), 2000);
+          return () => window.clearTimeout(infoTimer);
+        }, [revealLabs]);
+        return (
+          <div className="relative h-screen w-screen flex flex-col justify-center items-center bg-white text-gray-900">
+            {!showInfo ? (
+              <>
+                <div className="flex flex-col items-center select-none text-center">
+                  <div className="flex justify-center items-baseline">
+                    <span
+                      id="brand-yorke"
+                      style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", fontWeight: 700, color: "#0A1F33", letterSpacing: "-0.03em", opacity: revealYorke ? 1 : 0, transition: "opacity 1.5s ease" }}
+                    >Yorke</span>
+                    <span
+                      id="brand-labs"
+                      style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", fontWeight: 600, letterSpacing: "0.3em", color: "#0A1F33", textTransform: "uppercase", marginLeft: "0.6rem", opacity: revealLabs ? 1 : 0, transition: "opacity 1.5s ease" }}
+                    >Labs</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowInfo(true)}
+                  aria-label="About Yorke Labs"
+                  aria-hidden={!revealInfoBtn}
+                  tabIndex={revealInfoBtn ? 0 : -1}
+                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center border border-gray-400 rounded-full text-gray-700 hover:bg-gray-100"
+                  style={{ opacity: revealInfoBtn ? 1 : 0, pointerEvents: revealInfoBtn ? "auto" : "none", transition: "opacity 0.8s ease" }}
+                >i</button>
+              </>
+            ) : (
+              <div className="max-w-2xl text-center p-6 flex flex-col items-center justify-center h-full">
+                <p className="text-lg leading-relaxed text-gray-800 mb-8">
+                  An innovation studio and advisory practice operating at the convergence of AI, immersive technology, data capture, and digital fabrication. Serving as an on-demand product innovation lab delivering strategy, roadmaps, and end-to-end product development for both hardware and software.
+                </p>
+                <div className="flex flex-col items-center w-full">
+                  <input
+                    id="invite-input" type="text" inputMode="text" autoComplete="off" spellCheck={false} aria-label="Invite code"
+                    className="invite-input text-center rounded-2xl focus:outline-none placeholder-gray-300 max-w-full"
+                    style={{ padding: "0.6rem 0.8rem", background: "#ffffff", border: "none", color: "#0A1F33",
+                             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.10), inset 0 -1px 2px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03)", borderRadius: "16px" }}
+                    placeholder="" onChange={() => {}}
+                  />
+                  <div className="mt-2 text-xs tracking-wide" style={{ color: "rgba(10,31,51,0.35)" }}>Invite only</div>
+                </div>
+                <button onClick={() => setShowInfo(false)} aria-label="Close about"
+                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center border border-gray-400 rounded-full text-gray-700 hover:bg-gray-100">×</button>
+              </div>
+            )}
+          </div>
+        );
       }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      p {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Yorke Labs</h1>
-    <p>Something exciting is coming</p>
-  </div>
-</body>
+      ReactDOM.createRoot(document.getElementById("root")).render(<YorkeLabsSite />);
+    </script>
+  </body>
 </html>
