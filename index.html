@@ -33,13 +33,13 @@
         const [revealLabs, setRevealLabs] = useState(false);
         const [revealInfoBtn, setRevealInfoBtn] = useState(false);
         useEffect(() => {
-          const yorkeTimer = window.setTimeout(() => setRevealYorke(true), 0);
-          const labsTimer  = window.setTimeout(() => setRevealLabs(true), 1000);
+          const yorkeTimer = window.setTimeout(() => setRevealYorke(true), 500);
+          const labsTimer  = window.setTimeout(() => setRevealLabs(true), 1500);
           return () => { window.clearTimeout(yorkeTimer); window.clearTimeout(labsTimer); };
         }, []);
         useEffect(() => {
           if (!revealLabs) return;
-          const infoTimer = window.setTimeout(() => setRevealInfoBtn(true), 2000);
+          const infoTimer = window.setTimeout(() => setRevealInfoBtn(true), 2500);
           return () => window.clearTimeout(infoTimer);
         }, [revealLabs]);
         return (
@@ -93,6 +93,7 @@
     </script>
   </body>
 </html>
+
 
 
 
