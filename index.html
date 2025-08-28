@@ -63,7 +63,7 @@
                   aria-label="About Yorke Labs"
                   aria-hidden={!revealInfoBtn}
                   tabIndex={revealInfoBtn ? 0 : -1}
-                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center border border-gray-400 rounded-full text-gray-700 hover:bg-gray-100"
+                  className="absolute top-6 right-6 w-8 h-8 grid place-items-center border-2 border-[#0A1F33] rounded-full text-[#0A1F33] hover:bg-gray-100"
                   style={{ opacity: revealInfoBtn ? 1 : 0, pointerEvents: revealInfoBtn ? "auto" : "none", transition: "opacity 0.8s ease" }}
                 >i</button>
               </>
@@ -83,7 +83,7 @@
                   <div className="mt-2 text-xs tracking-wide" style={{ color: "rgba(10,31,51,0.35)" }}>Invite only</div>
                 </div>
                 <button onClick={() => setShowInfo(false)} aria-label="Close about"
-                  className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center border border-gray-400 rounded-full text-gray-700 hover:bg-gray-100">×</button>
+                  className="absolute top-6 right-6 w-8 h-8 grid place-items-center border-2 border-[#0A1F33] rounded-full text-[#0A1F33] hover:bg-gray-100">×</button>
               </div>
             )}
           </div>
@@ -93,4 +93,5 @@
     </script>
   </body>
 </html>
+
 
