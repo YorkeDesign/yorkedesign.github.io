@@ -33,18 +33,23 @@
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         font-family: var(--font-stack);
         background: var(--color-bg);
         color: var(--color-primary);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
       }
 
-      /* ── Landing ───────────────────────────────────── */
-      .landing {
+      /* ── Hero: full viewport, logo dead-centre ──── */
+      .hero {
         position: relative;
-        min-height: 100vh;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -65,7 +70,7 @@
         letter-spacing: -0.03em;
         color: var(--color-primary);
         opacity: 0;
-        transition: opacity var(--transition-slow);
+        transition: opacity 2s ease;
       }
 
       .brand-labs {
@@ -76,7 +81,7 @@
         color: var(--color-primary);
         margin-left: 0.6rem;
         opacity: 0;
-        transition: opacity var(--transition-slow);
+        transition: opacity 2s ease;
       }
 
       .brand-yorke.visible,
@@ -164,53 +169,107 @@
 
       .close-btn:hover { background: rgba(10, 31, 51, 0.06); }
 
-      /* ── CTA section (beneath brand) ───────────────── */
+      /* ── CTA: pinned to bottom of hero viewport ──── */
       .cta-section {
-        margin-top: 3.5rem;
+        position: absolute;
+        bottom: 4.5rem;
+        left: 50%;
+        transform: translateX(-50%);
         text-align: center;
         opacity: 0;
-        transform: translateY(12px);
-        transition: opacity 1s ease, transform 1s ease;
+        transition: opacity 1.8s ease;
         max-width: 32rem;
         padding: 0 1.5rem;
+        width: 100%;
       }
 
       .cta-section.visible {
         opacity: 1;
-        transform: translateY(0);
       }
 
       .cta-headline {
-        font-size: clamp(1rem, 2.5vw, 1.35rem);
+        font-size: clamp(0.9rem, 2vw, 1.15rem);
         font-weight: 300;
         letter-spacing: 0.02em;
         color: var(--color-primary);
         line-height: 1.6;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.6rem;
       }
 
       .cta-sub {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
         color: var(--color-subtle);
         font-weight: 500;
       }
 
-      /* ── Form section ──────────────────────────────── */
+      /* ── Scroll indicator ────────────────────────── */
+      .scroll-hint {
+        position: absolute;
+        bottom: 1.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 1.8s ease;
+      }
+
+      .scroll-hint.visible {
+        opacity: 1;
+      }
+
+      .scroll-hint span {
+        display: block;
+        width: 1px;
+        height: 24px;
+        background: var(--color-border);
+        margin: 0 auto;
+        animation: scrollPulse 2.4s ease-in-out infinite;
+      }
+
+      @keyframes scrollPulse {
+        0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+        50% { opacity: 1; transform: scaleY(1); }
+      }
+
+      /* ── Form section: below the fold ────────────── */
       .form-section {
         width: 100%;
         max-width: 36rem;
-        margin: 2.5rem auto 0;
-        padding: 0 1.5rem 4rem;
+        margin: 0 auto;
+        padding: 6rem 1.5rem 5rem;
         opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+        transform: translateY(40px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        pointer-events: none;
       }
 
       .form-section.visible {
         opacity: 1;
         transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .form-heading {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .form-heading h2 {
+        font-size: clamp(1rem, 2.5vw, 1.35rem);
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        color: var(--color-primary);
+        line-height: 1.6;
+        margin-bottom: 0.4rem;
+      }
+
+      .form-heading p {
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        font-weight: 500;
       }
 
       .form-divider {
@@ -378,13 +437,14 @@
       @media (max-width: 480px) {
         .form-row { grid-template-columns: 1fr; }
         .checkbox-grid { grid-template-columns: 1fr; }
-        .cta-section { margin-top: 2.5rem; }
+        .cta-section { bottom: 3.5rem; }
+        .scroll-hint { bottom: 1.2rem; }
       }
     </style>
   </head>
   <body>
-    <!-- Landing -->
-    <div class="landing">
+    <!-- Hero: full viewport, brand centred -->
+    <section class="hero">
       <div class="brand">
         <span class="brand-yorke" id="brand-yorke">Yorke</span>
         <span class="brand-labs" id="brand-labs">Labs</span>
@@ -393,80 +453,82 @@
       <!-- Info button -->
       <button class="info-btn" id="info-btn" aria-label="About Yorke Labs">i</button>
 
-      <!-- CTA beneath brand -->
+      <!-- CTA anchored to bottom of viewport -->
       <div class="cta-section" id="cta-section">
         <p class="cta-headline">Have a project you'd like us to explore?</p>
-        <p class="cta-sub">Complete the request below</p>
+        <p class="cta-sub">Scroll to tell us more</p>
       </div>
 
-      <!-- Project request form -->
-      <div class="form-section" id="form-section">
-        <div class="form-divider"></div>
+      <div class="scroll-hint" id="scroll-hint"><span></span></div>
+    </section>
 
-        <form id="project-form" action="https://formsubmit.co/simon.yorke@yorke.company" method="POST">
-          <!-- Formsubmit config -->
-          <input type="hidden" name="_subject" value="New Project Enquiry — Yorke Labs" />
-          <input type="hidden" name="_captcha" value="true" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+    <!-- Form: below the fold, revealed on scroll -->
+    <section class="form-section" id="form-section">
+      <div class="form-divider"></div>
 
-          <div class="form-row form-group">
-            <div>
-              <label class="form-label" for="field-name">Name</label>
-              <input class="form-input" id="field-name" name="Name" type="text" required autocomplete="name" />
-            </div>
-            <div>
-              <label class="form-label" for="field-company">Company / Project</label>
-              <input class="form-input" id="field-company" name="Company / Project" type="text" autocomplete="organization" />
-            </div>
+      <form id="project-form" action="https://formsubmit.co/simon.yorke@yorke.company" method="POST">
+        <!-- Formsubmit config -->
+        <input type="hidden" name="_subject" value="New Project Enquiry — Yorke Labs" />
+        <input type="hidden" name="_captcha" value="true" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div class="form-row form-group">
+          <div>
+            <label class="form-label" for="field-name">Name</label>
+            <input class="form-input" id="field-name" name="Name" type="text" required autocomplete="name" />
           </div>
-
-          <div class="form-group">
-            <label class="form-label" for="field-email">Email</label>
-            <input class="form-input" id="field-email" name="Email" type="email" required autocomplete="email" />
+          <div>
+            <label class="form-label" for="field-company">Company / Project</label>
+            <input class="form-input" id="field-company" name="Company / Project" type="text" autocomplete="organization" />
           </div>
-
-          <div class="form-group">
-            <label class="form-label">Type of work</label>
-            <div class="checkbox-grid">
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="AI" /> AI</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Immersive Experience" /> Immersive Experience</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Digital Fabrication" /> Digital Fabrication</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Data Capture" /> Data Capture</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Software Development" /> Software Development</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Product Design" /> Product Design</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Hardware" /> Hardware</label>
-              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Advisory" /> Advisory</label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="field-description">Briefly describe your project</label>
-            <textarea class="form-textarea" id="field-description" name="Project Description" rows="4"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Budget</label>
-            <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
-              <label class="checkbox-label"><input type="radio" name="Budget" value="Have budget" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Have budget</label>
-              <label class="checkbox-label"><input type="radio" name="Budget" value="Need help seeking funding" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Need help seeking funding</label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="field-timeframe">Timeframe</label>
-            <input class="form-input" id="field-timeframe" name="Timeframe" type="text" placeholder="e.g. 3 months, Q3 2026" />
-          </div>
-
-          <button class="submit-btn" type="submit" id="submit-btn">Submit Request</button>
-        </form>
-
-        <div class="form-success" id="form-success" style="display:none;">
-          <h3>Request received</h3>
-          <p>Thank you for your interest. We review every enquiry carefully and will be in touch if there is a fit.</p>
         </div>
+
+        <div class="form-group">
+          <label class="form-label" for="field-email">Email</label>
+          <input class="form-input" id="field-email" name="Email" type="email" required autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Type of work</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="AI" /> AI</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Immersive Experience" /> Immersive Experience</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Digital Fabrication" /> Digital Fabrication</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Data Capture" /> Data Capture</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Software Development" /> Software Development</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Product Design" /> Product Design</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Hardware" /> Hardware</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Advisory" /> Advisory</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="field-description">Briefly describe your project</label>
+          <textarea class="form-textarea" id="field-description" name="Project Description" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Budget</label>
+          <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
+            <label class="checkbox-label"><input type="radio" name="Budget" value="Have budget" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Have budget</label>
+            <label class="checkbox-label"><input type="radio" name="Budget" value="Need help seeking funding" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Need help seeking funding</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="field-timeframe">Timeframe</label>
+          <input class="form-input" id="field-timeframe" name="Timeframe" type="text" placeholder="e.g. 3 months, Q3 2026" />
+        </div>
+
+        <button class="submit-btn" type="submit" id="submit-btn">Submit Request</button>
+      </form>
+
+      <div class="form-success" id="form-success" style="display:none;">
+        <h3>Request received</h3>
+        <p>Thank you for your interest. We review every enquiry carefully and will be in touch if there is a fit.</p>
       </div>
-    </div>
+    </section>
 
     <!-- Info panel overlay -->
     <div class="info-panel" id="info-panel" role="dialog" aria-label="About Yorke Labs">
@@ -478,28 +540,45 @@
 
     <script>
       (function () {
-        // Elements
-        var brandYorke  = document.getElementById('brand-yorke');
-        var brandLabs   = document.getElementById('brand-labs');
-        var infoBtn     = document.getElementById('info-btn');
-        var infoPanel   = document.getElementById('info-panel');
-        var closeInfo   = document.getElementById('close-info');
-        var ctaSection  = document.getElementById('cta-section');
-        var formSection = document.getElementById('form-section');
-        var form        = document.getElementById('project-form');
-        var submitBtn   = document.getElementById('submit-btn');
-        var formSuccess = document.getElementById('form-success');
+        var brandYorke   = document.getElementById('brand-yorke');
+        var brandLabs    = document.getElementById('brand-labs');
+        var infoBtn      = document.getElementById('info-btn');
+        var infoPanel    = document.getElementById('info-panel');
+        var closeInfo    = document.getElementById('close-info');
+        var ctaSection   = document.getElementById('cta-section');
+        var scrollHint   = document.getElementById('scroll-hint');
+        var formSection  = document.getElementById('form-section');
+        var form         = document.getElementById('project-form');
+        var submitBtn    = document.getElementById('submit-btn');
+        var formSuccess  = document.getElementById('form-success');
 
-        // Brand reveal sequence
-        setTimeout(function () { brandYorke.classList.add('visible'); }, 500);
-        setTimeout(function () { brandLabs.classList.add('visible'); }, 1500);
-        setTimeout(function () { infoBtn.classList.add('visible'); }, 4000);
+        /* ── Brand reveal sequence ───────────────────── */
+        setTimeout(function () { brandYorke.classList.add('visible'); }, 600);
+        setTimeout(function () { brandLabs.classList.add('visible'); }, 2200);
+        setTimeout(function () { infoBtn.classList.add('visible'); }, 4500);
 
-        // CTA + form reveal (1s after Labs appears)
-        setTimeout(function () { ctaSection.classList.add('visible'); }, 2500);
-        setTimeout(function () { formSection.classList.add('visible'); }, 2800);
+        /* CTA + scroll hint appear well after brand settles */
+        setTimeout(function () {
+          ctaSection.classList.add('visible');
+          scrollHint.classList.add('visible');
+        }, 4000);
 
-        // Info panel
+        /* ── Scroll-driven form reveal ───────────────── */
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              formSection.classList.add('visible');
+            } else {
+              formSection.classList.remove('visible');
+            }
+          });
+        }, {
+          threshold: 0.05
+        });
+
+        observer.observe(formSection);
+
+        /* ── Info panel ──────────────────────────────── */
         infoBtn.addEventListener('click', function () {
           infoPanel.classList.add('visible');
           closeInfo.focus();
@@ -510,7 +589,6 @@
           infoBtn.focus();
         });
 
-        // Close on Escape
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && infoPanel.classList.contains('visible')) {
             infoPanel.classList.remove('visible');
@@ -518,7 +596,7 @@
           }
         });
 
-        // Radio button styling (checked state)
+        /* ── Radio button styling ────────────────────── */
         var radios = form.querySelectorAll('input[type="radio"]');
         radios.forEach(function (radio) {
           radio.addEventListener('change', function () {
@@ -533,7 +611,7 @@
           });
         });
 
-        // Form submission via fetch (stay on page)
+        /* ── Form submission (stay on page) ──────────── */
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           submitBtn.disabled = true;
