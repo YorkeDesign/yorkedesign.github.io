@@ -3,98 +3,564 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Yorke Labs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Yorke Labs — Innovation Studio &amp; Advisory</title>
+    <meta name="description" content="Yorke Labs is an innovation studio and advisory practice at the convergence of AI, immersive technology, data capture, and digital fabrication." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Yorke Labs — Innovation Studio &amp; Advisory" />
+    <meta property="og:description" content="An on-demand product innovation lab delivering strategy, roadmaps, and end-to-end product development." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yorkedesign.co" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Yorke Labs — Innovation Studio &amp; Advisory" />
+    <meta name="twitter:description" content="An on-demand product innovation lab delivering strategy, roadmaps, and end-to-end product development." />
+
     <style>
-      :root { color-scheme: light; }
-      body { margin: 0; background: white; }
-      #brand-yorke { font-size: clamp(42px, 9vw, 90px); }
-      #brand-labs  { font-size: clamp(12px, 1.8vw, 18px); }
-      .invite-input {
-        width: min(26vw, 288px);
-        max-width: 90vw;
-        box-sizing: border-box;
+      :root {
+        color-scheme: light;
+        --color-primary: #0A1F33;
+        --color-bg: #ffffff;
+        --color-subtle: rgba(10, 31, 51, 0.35);
+        --color-border: rgba(10, 31, 51, 0.12);
+        --color-input-shadow: inset 0 2px 6px rgba(0,0,0,0.08), inset 0 -1px 2px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+        --font-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        --transition-slow: 1.5s ease;
+        --transition-med: 0.8s ease;
+        --transition-fast: 0.3s ease;
       }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--font-stack);
+        background: var(--color-bg);
+        color: var(--color-primary);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ── Landing ───────────────────────────────────── */
+      .landing {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        user-select: none;
+        text-align: center;
+      }
+
+      .brand-yorke {
+        font-size: clamp(42px, 9vw, 90px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--color-primary);
+        opacity: 0;
+        transition: opacity var(--transition-slow);
+      }
+
+      .brand-labs {
+        font-size: clamp(12px, 1.8vw, 18px);
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        margin-left: 0.6rem;
+        opacity: 0;
+        transition: opacity var(--transition-slow);
+      }
+
+      .brand-yorke.visible,
+      .brand-labs.visible { opacity: 1; }
+
+      /* ── Info button ────────────────────────────────── */
+      .info-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 2rem;
+        height: 2rem;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--color-primary);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--color-primary);
+        font-family: var(--font-stack);
+        font-size: 0.85rem;
+        font-weight: 600;
+        font-style: italic;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity var(--transition-med), background var(--transition-fast);
+      }
+
+      .info-btn.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .info-btn:hover { background: rgba(10, 31, 51, 0.06); }
+
+      /* ── Info panel (overlay) ───────────────────────── */
+      .info-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-bg);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .info-panel.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .info-panel-inner {
+        max-width: 40rem;
+        padding: 2rem 1.5rem;
+        text-align: center;
+      }
+
+      .info-panel-inner p {
+        font-size: 1.125rem;
+        line-height: 1.75;
+        color: rgba(10, 31, 51, 0.75);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 2rem;
+        height: 2rem;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--color-primary);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--color-primary);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background var(--transition-fast);
+        line-height: 1;
+      }
+
+      .close-btn:hover { background: rgba(10, 31, 51, 0.06); }
+
+      /* ── CTA section (beneath brand) ───────────────── */
+      .cta-section {
+        margin-top: 3.5rem;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 1s ease, transform 1s ease;
+        max-width: 32rem;
+        padding: 0 1.5rem;
+      }
+
+      .cta-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .cta-headline {
+        font-size: clamp(1rem, 2.5vw, 1.35rem);
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        color: var(--color-primary);
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+      }
+
+      .cta-sub {
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        font-weight: 500;
+      }
+
+      /* ── Form section ──────────────────────────────── */
+      .form-section {
+        width: 100%;
+        max-width: 36rem;
+        margin: 2.5rem auto 0;
+        padding: 0 1.5rem 4rem;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+      }
+
+      .form-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .form-divider {
+        width: 2rem;
+        height: 1px;
+        background: var(--color-border);
+        margin: 0 auto 2.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.75rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        margin-bottom: 0.6rem;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 0.7rem 0.9rem;
+        background: var(--color-bg);
+        border: none;
+        border-radius: 10px;
+        box-shadow: var(--color-input-shadow);
+        font-family: var(--font-stack);
+        font-size: 0.95rem;
+        color: var(--color-primary);
+        outline: none;
+        transition: box-shadow var(--transition-fast);
+      }
+
+      .form-input::placeholder,
+      .form-textarea::placeholder {
+        color: rgba(10, 31, 51, 0.2);
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        box-shadow: var(--color-input-shadow), 0 0 0 2px rgba(10, 31, 51, 0.1);
+      }
+
+      .form-textarea {
+        min-height: 5.5rem;
+        resize: vertical;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      /* ── Checkboxes ─────────────────────────────────── */
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.55rem 1.25rem;
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: var(--color-primary);
+        transition: color var(--transition-fast);
+      }
+
+      .checkbox-label:hover { color: rgba(10, 31, 51, 0.65); }
+
+      .checkbox-label input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border: 1.5px solid var(--color-border);
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: border-color var(--transition-fast), background var(--transition-fast);
+      }
+
+      .checkbox-label input[type="checkbox"]:checked {
+        border-color: var(--color-primary);
+        background: var(--color-primary);
+      }
+
+      .checkbox-label input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 1px;
+        width: 4px;
+        height: 8px;
+        border: solid var(--color-bg);
+        border-width: 0 1.5px 1.5px 0;
+        transform: rotate(45deg);
+      }
+
+      /* ── Submit button ──────────────────────────────── */
+      .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 0.85rem;
+        margin-top: 2.25rem;
+        border: 2px solid var(--color-primary);
+        border-radius: 10px;
+        background: transparent;
+        color: var(--color-primary);
+        font-family: var(--font-stack);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background var(--transition-fast), color var(--transition-fast);
+      }
+
+      .submit-btn:hover {
+        background: var(--color-primary);
+        color: var(--color-bg);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* ── Success message ────────────────────────────── */
+      .form-success {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeUp 0.8s ease forwards;
+      }
+
+      .form-success h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.75rem;
+      }
+
+      .form-success p {
+        font-size: 0.9rem;
+        color: rgba(10, 31, 51, 0.55);
+        line-height: 1.6;
+      }
+
+      @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Responsive ─────────────────────────────────── */
       @media (max-width: 480px) {
-        .invite-input { width: 80vw; }
+        .form-row { grid-template-columns: 1fr; }
+        .checkbox-grid { grid-template-columns: 1fr; }
+        .cta-section { margin-top: 2.5rem; }
       }
     </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="text/babel">
-      const { useState, useEffect } = React;
-      function YorkeLabsSite() {
-        const [showInfo, setShowInfo] = useState(false);
-        const [revealYorke, setRevealYorke] = useState(false);
-        const [revealLabs, setRevealLabs] = useState(false);
-        const [revealInfoBtn, setRevealInfoBtn] = useState(false);
-        useEffect(() => {
-          const yorkeTimer = window.setTimeout(() => setRevealYorke(true), 500);
-          const labsTimer  = window.setTimeout(() => setRevealLabs(true), 1500);
-          return () => { window.clearTimeout(yorkeTimer); window.clearTimeout(labsTimer); };
-        }, []);
-        useEffect(() => {
-          if (!revealLabs) return;
-          const infoTimer = window.setTimeout(() => setRevealInfoBtn(true), 2500);
-          return () => window.clearTimeout(infoTimer);
-        }, [revealLabs]);
-        return (
-          <div className="relative h-screen w-screen flex flex-col justify-center items-center bg-white text-gray-900">
-            {!showInfo ? (
-              <>
-                <div className="flex flex-col items-center select-none text-center">
-                  <div className="flex justify-center items-baseline">
-                    <span
-                      id="brand-yorke"
-                      style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", fontWeight: 700, color: "#0A1F33", letterSpacing: "-0.03em", opacity: revealYorke ? 1 : 0, transition: "opacity 1.5s ease" }}
-                    >Yorke</span>
-                    <span
-                      id="brand-labs"
-                      style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif", fontWeight: 600, letterSpacing: "0.3em", color: "#0A1F33", textTransform: "uppercase", marginLeft: "0.6rem", opacity: revealLabs ? 1 : 0, transition: "opacity 1.5s ease" }}
-                    >Labs</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowInfo(true)}
-                  aria-label="About Yorke Labs"
-                  aria-hidden={!revealInfoBtn}
-                  tabIndex={revealInfoBtn ? 0 : -1}
-                  className="absolute top-6 right-6 w-8 h-8 grid place-items-center border-2 border-[#0A1F33] rounded-full text-[#0A1F33] hover:bg-gray-100"
-                  style={{ opacity: revealInfoBtn ? 1 : 0, pointerEvents: revealInfoBtn ? "auto" : "none", transition: "opacity 0.8s ease" }}
-                >i</button>
-              </>
-            ) : (
-              <div className="max-w-2xl text-center p-6 flex flex-col items-center justify-center h-full">
-                <p className="text-lg leading-relaxed text-gray-800 mb-8">
-                  Yorke Labs is an innovation studio and advisory practice operating at the convergence of AI, immersive technology, data capture, and digital fabrication. Serving as an on-demand product innovation lab delivering strategy, roadmaps, and end-to-end product development for both hardware and software.
-                </p>
-                <div className="flex flex-col items-center w-full">
-                  <input
-                    id="invite-input" type="text" inputMode="text" autoComplete="off" spellCheck={false} aria-label="Invite code"
-                    className="invite-input text-center rounded-2xl focus:outline-none placeholder-gray-300 max-w-full"
-                    style={{ padding: "0.6rem 0.8rem", background: "#ffffff", border: "none", color: "#0A1F33",
-                             boxShadow: "inset 0 2px 6px rgba(0,0,0,0.10), inset 0 -1px 2px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03)", borderRadius: "10px" }}
-                    placeholder="" onChange={() => {}}
-                  />
-                  <div className="mt-2 text-xs tracking-wide" style={{ color: "rgba(10,31,51,0.35)" }}>Invite only</div>
-                </div>
-                <button onClick={() => setShowInfo(false)} aria-label="Close about"
-                  className="absolute top-6 right-6 w-8 h-8 grid place-items-center border-2 border-[#0A1F33] rounded-full text-[#0A1F33] hover:bg-gray-100"><span className="leading-none">×</span></button>
-              </div>
-            )}
+    <!-- Landing -->
+    <div class="landing">
+      <div class="brand">
+        <span class="brand-yorke" id="brand-yorke">Yorke</span>
+        <span class="brand-labs" id="brand-labs">Labs</span>
+      </div>
+
+      <!-- Info button -->
+      <button class="info-btn" id="info-btn" aria-label="About Yorke Labs">i</button>
+
+      <!-- CTA beneath brand -->
+      <div class="cta-section" id="cta-section">
+        <p class="cta-headline">Have a project you'd like us to explore?</p>
+        <p class="cta-sub">Complete the request below</p>
+      </div>
+
+      <!-- Project request form -->
+      <div class="form-section" id="form-section">
+        <div class="form-divider"></div>
+
+        <form id="project-form" action="https://formsubmit.co/simon@yorkelabs.co.nz" method="POST">
+          <!-- Formsubmit config -->
+          <input type="hidden" name="_subject" value="New Project Enquiry — Yorke Labs" />
+          <input type="hidden" name="_captcha" value="true" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="form-row form-group">
+            <div>
+              <label class="form-label" for="field-name">Name</label>
+              <input class="form-input" id="field-name" name="Name" type="text" required autocomplete="name" />
+            </div>
+            <div>
+              <label class="form-label" for="field-company">Company / Project</label>
+              <input class="form-input" id="field-company" name="Company / Project" type="text" autocomplete="organization" />
+            </div>
           </div>
-        );
-      }
-      ReactDOM.createRoot(document.getElementById("root")).render(<YorkeLabsSite />);
+
+          <div class="form-group">
+            <label class="form-label" for="field-email">Email</label>
+            <input class="form-input" id="field-email" name="Email" type="email" required autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Type of work</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="AI" /> AI</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Immersive Experience" /> Immersive Experience</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Digital Fabrication" /> Digital Fabrication</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Data Capture" /> Data Capture</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Software Development" /> Software Development</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Product Design" /> Product Design</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Hardware" /> Hardware</label>
+              <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Advisory" /> Advisory</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-description">Briefly describe your project</label>
+            <textarea class="form-textarea" id="field-description" name="Project Description" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Budget</label>
+            <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
+              <label class="checkbox-label"><input type="radio" name="Budget" value="Have budget" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Have budget</label>
+              <label class="checkbox-label"><input type="radio" name="Budget" value="Need help seeking funding" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Need help seeking funding</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-timeframe">Timeframe</label>
+            <input class="form-input" id="field-timeframe" name="Timeframe" type="text" placeholder="e.g. 3 months, Q3 2026" />
+          </div>
+
+          <button class="submit-btn" type="submit" id="submit-btn">Submit Request</button>
+        </form>
+
+        <div class="form-success" id="form-success" style="display:none;">
+          <h3>Request received</h3>
+          <p>Thank you for your interest. We review every enquiry carefully and will be in touch if there is a fit.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info panel overlay -->
+    <div class="info-panel" id="info-panel" role="dialog" aria-label="About Yorke Labs">
+      <div class="info-panel-inner">
+        <p>Yorke Labs is an innovation studio and advisory practice operating at the convergence of AI, immersive technology, data capture, and digital fabrication. Serving as an on-demand product innovation lab delivering strategy, roadmaps, and end-to-end product development for both hardware and software.</p>
+      </div>
+      <button class="close-btn" id="close-info" aria-label="Close">&#215;</button>
+    </div>
+
+    <script>
+      (function () {
+        // Elements
+        var brandYorke  = document.getElementById('brand-yorke');
+        var brandLabs   = document.getElementById('brand-labs');
+        var infoBtn     = document.getElementById('info-btn');
+        var infoPanel   = document.getElementById('info-panel');
+        var closeInfo   = document.getElementById('close-info');
+        var ctaSection  = document.getElementById('cta-section');
+        var formSection = document.getElementById('form-section');
+        var form        = document.getElementById('project-form');
+        var submitBtn   = document.getElementById('submit-btn');
+        var formSuccess = document.getElementById('form-success');
+
+        // Brand reveal sequence
+        setTimeout(function () { brandYorke.classList.add('visible'); }, 500);
+        setTimeout(function () { brandLabs.classList.add('visible'); }, 1500);
+        setTimeout(function () { infoBtn.classList.add('visible'); }, 4000);
+
+        // CTA + form reveal (1s after Labs appears)
+        setTimeout(function () { ctaSection.classList.add('visible'); }, 2500);
+        setTimeout(function () { formSection.classList.add('visible'); }, 2800);
+
+        // Info panel
+        infoBtn.addEventListener('click', function () {
+          infoPanel.classList.add('visible');
+          closeInfo.focus();
+        });
+
+        closeInfo.addEventListener('click', function () {
+          infoPanel.classList.remove('visible');
+          infoBtn.focus();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && infoPanel.classList.contains('visible')) {
+            infoPanel.classList.remove('visible');
+            infoBtn.focus();
+          }
+        });
+
+        // Radio button styling (checked state)
+        var radios = form.querySelectorAll('input[type="radio"]');
+        radios.forEach(function (radio) {
+          radio.addEventListener('change', function () {
+            radios.forEach(function (r) {
+              r.style.borderColor = 'var(--color-border)';
+              r.style.background = 'transparent';
+            });
+            if (radio.checked) {
+              radio.style.borderColor = 'var(--color-primary)';
+              radio.style.background = 'var(--color-primary)';
+            }
+          });
+        });
+
+        // Form submission via fetch (stay on page)
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting\u2026';
+
+          var data = new FormData(form);
+
+          fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          }).then(function (response) {
+            if (response.ok) {
+              form.style.display = 'none';
+              formSuccess.style.display = 'block';
+            } else {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Submit Request';
+              alert('Something went wrong. Please try again.');
+            }
+          }).catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Request';
+            alert('Network error. Please check your connection and try again.');
+          });
+        });
+      })();
     </script>
   </body>
 </html>
-
-
-
-
-
