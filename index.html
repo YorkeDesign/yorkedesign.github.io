@@ -366,16 +366,22 @@
         background: var(--color-primary);
       }
 
-      .checkbox-label input[type="checkbox"]:checked::after {
-        content: '';
-        position: absolute;
-        left: 4px;
-        top: 1px;
-        width: 4px;
-        height: 8px;
-        border: solid var(--color-bg);
-        border-width: 0 1.5px 1.5px 0;
-        transform: rotate(45deg);
+      .checkbox-label input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border: 1.5px solid var(--color-border);
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: border-color var(--transition-fast), background var(--transition-fast);
+      }
+
+      .checkbox-label input[type="radio"]:checked {
+        border-color: var(--color-primary);
+        background: var(--color-primary);
       }
 
       /* ── Submit button ──────────────────────────────── */
@@ -511,8 +517,8 @@
         <div class="form-group">
           <label class="form-label">Budget</label>
           <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
-            <label class="checkbox-label"><input type="radio" name="Budget" value="Have budget" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Have budget</label>
-            <label class="checkbox-label"><input type="radio" name="Budget" value="Need help seeking funding" style="appearance:none;-webkit-appearance:none;width:1rem;height:1rem;border:1.5px solid var(--color-border);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;transition:border-color 0.3s,background 0.3s;" /> Need help seeking funding</label>
+            <label class="checkbox-label"><input type="radio" name="Budget" value="Have budget" /> Have budget</label>
+            <label class="checkbox-label"><input type="radio" name="Budget" value="Need help seeking funding" /> Need help seeking funding</label>
           </div>
         </div>
 
@@ -596,21 +602,6 @@
           }
         });
 
-        /* ── Radio button styling ────────────────────── */
-        var radios = form.querySelectorAll('input[type="radio"]');
-        radios.forEach(function (radio) {
-          radio.addEventListener('change', function () {
-            radios.forEach(function (r) {
-              r.style.borderColor = 'var(--color-border)';
-              r.style.background = 'transparent';
-            });
-            if (radio.checked) {
-              radio.style.borderColor = 'var(--color-primary)';
-              radio.style.background = 'var(--color-primary)';
-            }
-          });
-        });
-
         /* ── Form submission (stay on page) ──────────── */
         form.addEventListener('submit', function (e) {
           e.preventDefault();
@@ -618,6 +609,16 @@
           submitBtn.textContent = 'Submitting\u2026';
 
           var data = new FormData(form);
+
+          /* Merge all Work Type checkboxes into a single comma-separated value */
+          var workTypes = [];
+          form.querySelectorAll('input[name="Work Type"]:checked').forEach(function (cb) {
+            workTypes.push(cb.value);
+          });
+          data.delete('Work Type');
+          if (workTypes.length) {
+            data.append('Work Type', workTypes.join(', '));
+          }
 
           fetch(form.action, {
             method: 'POST',
