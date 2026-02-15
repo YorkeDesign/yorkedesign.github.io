@@ -486,7 +486,7 @@
           </div>
           <div>
             <label class="form-label" for="field-company">Company / Project</label>
-            <input class="form-input" id="field-company" name="Company / Project" type="text" autocomplete="organization" />
+            <input class="form-input" id="field-company" name="Company / Project" type="text" required autocomplete="organization" />
           </div>
         </div>
 
@@ -500,18 +500,20 @@
           <div class="checkbox-grid">
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="AI" /> AI</label>
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Immersive Experience" /> Immersive Experience</label>
-            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Digital Fabrication" /> Digital Fabrication</label>
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Data Capture" /> Data Capture</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Automation" /> Automation</label>
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Software Development" /> Software Development</label>
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Product Design" /> Product Design</label>
-            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Hardware" /> Hardware</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Digital Fabrication" /> Digital Fabrication</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Robotics" /> Robotics</label>
+            <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Design" /> Design</label>
             <label class="checkbox-label"><input type="checkbox" name="Work Type" value="Advisory" /> Advisory</label>
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="field-description">Briefly describe your project</label>
-          <textarea class="form-textarea" id="field-description" name="Project Description" rows="4"></textarea>
+          <textarea class="form-textarea" id="field-description" name="Project Description" rows="4" required></textarea>
         </div>
 
         <div class="form-group">
@@ -524,7 +526,7 @@
 
         <div class="form-group">
           <label class="form-label" for="field-timeframe">Timeframe</label>
-          <input class="form-input" id="field-timeframe" name="Timeframe" type="text" placeholder="e.g. 3 months, Q3 2026" />
+          <input class="form-input" id="field-timeframe" name="Timeframe" type="text" required placeholder="e.g. 3 months, Q3 2026" />
         </div>
 
         <button class="submit-btn" type="submit" id="submit-btn">Submit Request</button>
@@ -605,6 +607,19 @@
         /* ── Form submission (stay on page) ──────────── */
         form.addEventListener('submit', function (e) {
           e.preventDefault();
+
+          /* Require at least one Work Type */
+          if (!form.querySelector('input[name="Work Type"]:checked')) {
+            alert('Please select at least one type of work.');
+            return;
+          }
+
+          /* Require a Budget selection */
+          if (!form.querySelector('input[name="Budget"]:checked')) {
+            alert('Please select a budget option.');
+            return;
+          }
+
           submitBtn.disabled = true;
           submitBtn.textContent = 'Submitting\u2026';
 
