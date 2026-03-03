@@ -44,6 +44,11 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
+
+        /* Sticky footer enhancement (NEW) */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
       /* ── Hero: full viewport, logo dead-centre ──── */
@@ -439,6 +444,34 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
+      /* ── Footer (NEW) ──────────────────────────────── */
+      .site-footer {
+        width: 100%;
+        max-width: 36rem;
+        margin: 0 auto;
+        padding: 0 1.5rem 2.5rem;
+        text-align: center;
+
+        /* Sticky footer enhancement (NEW) */
+        margin-top: auto;
+      }
+
+      .footer-divider {
+        width: 2rem;
+        height: 1px;
+        background: var(--color-border);
+        margin: 0 auto 1.1rem;
+      }
+
+      .footer-note {
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        font-weight: 500;
+        line-height: 1.6;
+      }
+
       /* ── Responsive ─────────────────────────────────── */
       @media (max-width: 480px) {
         .form-row { grid-template-columns: 1fr; }
@@ -537,6 +570,12 @@
         <p>Thank you for your interest. We review every enquiry carefully and will be in touch if there is a fit.</p>
       </div>
     </section>
+
+    <!-- Footer note (NEW) -->
+    <footer class="site-footer" aria-label="Company information">
+      <div class="footer-divider"></div>
+      <p class="footer-note">Yorke Labs is a division of Yorke Limited, a New Zealand-registered company</p>
+    </footer>
 
     <!-- Info panel overlay -->
     <div class="info-panel" id="info-panel" role="dialog" aria-label="About Yorke Labs">
