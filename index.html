@@ -12,6 +12,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://yorkedesign.co" />
 
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Helvetica Neue,sans-serif' font-weight='700'>Y</text></svg>" />
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Yorke Labs — Innovation Studio &amp; Advisory" />
@@ -85,12 +88,16 @@
         text-transform: uppercase;
         color: var(--color-primary);
         margin-left: 0.6rem;
-        opacity: 0;
-        transition: opacity 2s ease;
       }
 
-      .brand-yorke.visible,
-      .brand-labs.visible { opacity: 1; }
+      .brand-labs .letter {
+        opacity: 0;
+        transition: opacity 1.4s ease;
+      }
+
+      .brand-labs .letter.visible { opacity: 1; }
+
+      .brand-yorke.visible { opacity: 1; }
 
       /* ── Info button ────────────────────────────────── */
       .info-btn {
@@ -371,6 +378,18 @@
         background: var(--color-primary);
       }
 
+      .checkbox-label input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        top: 1.5px;
+        left: 4.5px;
+        width: 4px;
+        height: 8px;
+        border: solid #fff;
+        border-width: 0 1.5px 1.5px 0;
+        transform: rotate(45deg);
+      }
+
       .checkbox-label input[type="radio"] {
         appearance: none;
         -webkit-appearance: none;
@@ -387,6 +406,18 @@
       .checkbox-label input[type="radio"]:checked {
         border-color: var(--color-primary);
         background: var(--color-primary);
+      }
+
+      .checkbox-label input[type="radio"]:checked::after {
+        content: '';
+        position: absolute;
+        top: 1.5px;
+        left: 4.5px;
+        width: 4px;
+        height: 8px;
+        border: solid #fff;
+        border-width: 0 1.5px 1.5px 0;
+        transform: rotate(45deg);
       }
 
       /* ── Submit button ──────────────────────────────── */
@@ -486,7 +517,7 @@
     <section class="hero">
       <div class="brand">
         <span class="brand-yorke" id="brand-yorke">Yorke</span>
-        <span class="brand-labs" id="brand-labs">Labs</span>
+        <span class="brand-labs" id="brand-labs"><span class="letter">L</span><span class="letter">a</span><span class="letter">b</span><span class="letter">s</span></span>
       </div>
 
       <!-- Info button -->
@@ -509,6 +540,7 @@
         <!-- Formsubmit config -->
         <input type="hidden" name="_subject" value="New Project Enquiry — Yorke Labs" />
         <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://yorkedesign.co" />
         <input type="hidden" name="_template" value="table" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
@@ -600,8 +632,12 @@
         var formSuccess  = document.getElementById('form-success');
 
         /* ── Brand reveal sequence ───────────────────── */
+        var labsLetters = document.querySelectorAll('#brand-labs .letter');
+
         setTimeout(function () { brandYorke.classList.add('visible'); }, 600);
-        setTimeout(function () { brandLabs.classList.add('visible'); }, 2200);
+        labsLetters.forEach(function (letter, i) {
+          setTimeout(function () { letter.classList.add('visible'); }, 2200 + (i * 300));
+        });
         setTimeout(function () { infoBtn.classList.add('visible'); }, 4500);
 
         /* CTA + scroll hint appear well after brand settles */
@@ -626,20 +662,24 @@
         observer.observe(formSection);
 
         /* ── Info panel ──────────────────────────────── */
-        infoBtn.addEventListener('click', function () {
+        function openInfo() {
           infoPanel.classList.add('visible');
+          document.body.style.overflow = 'hidden';
           closeInfo.focus();
-        });
+        }
 
-        closeInfo.addEventListener('click', function () {
+        function closeInfoPanel() {
           infoPanel.classList.remove('visible');
+          document.body.style.overflow = '';
           infoBtn.focus();
-        });
+        }
+
+        infoBtn.addEventListener('click', openInfo);
+        closeInfo.addEventListener('click', closeInfoPanel);
 
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && infoPanel.classList.contains('visible')) {
-            infoPanel.classList.remove('visible');
-            infoBtn.focus();
+            closeInfoPanel();
           }
         });
 
@@ -686,16 +726,26 @@
               'Accept': 'application/json'
             }
           }).then(function (response) {
-            return response.json().then(function (body) {
-              if (response.ok && body.success) {
-                form.style.display = 'none';
-                formSuccess.style.display = 'block';
-              } else {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Request';
-                alert('Submission failed: ' + (body.message || JSON.stringify(body)));
-              }
-            });
+            var contentType = response.headers.get('content-type') || '';
+            if (response.ok && contentType.indexOf('application/json') !== -1) {
+              return response.json().then(function (body) {
+                if (body.success) {
+                  form.style.display = 'none';
+                  formSuccess.style.display = 'block';
+                } else {
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Submit Request';
+                  alert('Submission failed: ' + (body.message || 'Please try again.'));
+                }
+              });
+            } else if (response.ok) {
+              form.style.display = 'none';
+              formSuccess.style.display = 'block';
+            } else {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Submit Request';
+              alert('Submission failed (status ' + response.status + '). Please try again.');
+            }
           }).catch(function (err) {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Submit Request';
