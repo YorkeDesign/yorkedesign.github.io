@@ -146,12 +146,12 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity var(--transition-med), box-shadow 0.4s ease, background 0.3s ease;
-        /* Match client-link embossed style */
+        /* Embossed style — light from bottom-left */
         box-shadow:
-          inset 2px 2px 4px rgba(0,0,0,0.2),
-          inset -1px -1px 2px rgba(255,255,255,0.7),
-          1px 1px 3px rgba(255,255,255,0.5),
-          -1px -1px 3px rgba(0,0,0,0.1);
+          inset 2px -2px 4px rgba(0,0,0,0.2),
+          inset -1px 1px 2px rgba(255,255,255,0.7),
+          1px -1px 3px rgba(255,255,255,0.5),
+          -1px 1px 3px rgba(0,0,0,0.1);
       }
 
       .info-btn.visible {
@@ -161,9 +161,9 @@
 
       .info-btn:hover {
         box-shadow:
-          inset 3px 3px 6px rgba(0,0,0,0.2),
-          inset -2px -2px 4px rgba(255,255,255,0.4),
-          0 1px 1px rgba(0,0,0,0.04);
+          inset 3px -3px 6px rgba(0,0,0,0.2),
+          inset -2px 2px 4px rgba(255,255,255,0.4),
+          0 -1px 1px rgba(0,0,0,0.04);
       }
 
       /* ── Info panel (overlay) ───────────────────────── */
@@ -474,19 +474,19 @@
         text-transform: uppercase;
         cursor: pointer;
         transition: box-shadow 0.4s ease, background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-        /* Embossed / debossed into paper effect — matches client button */
+        /* Embossed into paper — light from bottom-left */
         box-shadow:
-          inset 1px 1px 2px rgba(0,0,0,0.1),
-          inset -1px -1px 2px rgba(255,255,255,0.7),
-          1px 1px 3px rgba(255,255,255,0.5),
-          -1px -1px 3px rgba(0,0,0,0.06);
+          inset 1px -1px 2px rgba(0,0,0,0.1),
+          inset -1px 1px 2px rgba(255,255,255,0.7),
+          1px -1px 3px rgba(255,255,255,0.5),
+          -1px 1px 3px rgba(0,0,0,0.06);
       }
 
       .submit-btn:hover {
         box-shadow:
-          inset 3px 3px 6px rgba(0,0,0,0.2),
-          inset -2px -2px 4px rgba(255,255,255,0.4),
-          0 1px 1px rgba(0,0,0,0.04);
+          inset 3px -3px 6px rgba(0,0,0,0.2),
+          inset -2px 2px 4px rgba(255,255,255,0.4),
+          0 -1px 1px rgba(0,0,0,0.04);
         background: rgba(10, 31, 51, 0.03);
         transform: scale(0.99);
       }
@@ -573,19 +573,19 @@
         background: transparent;
         font-family: var(--font-stack);
         font-weight: 600;
-        /* Embossed / debossed into paper effect */
+        /* Embossed into paper — light from bottom-left */
         box-shadow:
-          inset 1px 1px 2px rgba(0,0,0,0.1),
-          inset -1px -1px 2px rgba(255,255,255,0.7),
-          1px 1px 3px rgba(255,255,255,0.5),
-          -1px -1px 3px rgba(0,0,0,0.06);
+          inset 1px -1px 2px rgba(0,0,0,0.1),
+          inset -1px 1px 2px rgba(255,255,255,0.7),
+          1px -1px 3px rgba(255,255,255,0.5),
+          -1px 1px 3px rgba(0,0,0,0.06);
       }
 
       .client-link:hover {
         box-shadow:
-          inset 3px 3px 6px rgba(0,0,0,0.2),
-          inset -2px -2px 4px rgba(255,255,255,0.4),
-          0 1px 1px rgba(0,0,0,0.04);
+          inset 3px -3px 6px rgba(0,0,0,0.2),
+          inset -2px 2px 4px rgba(255,255,255,0.4),
+          0 -1px 1px rgba(0,0,0,0.04);
         color: var(--color-primary);
         background: rgba(10, 31, 51, 0.03);
         transform: scale(0.98);
