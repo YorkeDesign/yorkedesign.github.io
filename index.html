@@ -104,7 +104,7 @@
         transition: opacity 2s ease, color 0.3s ease, text-shadow 0.3s ease;
       }
 
-      /* Letters are embossed into paper — no hover movement */
+      /* No hover movement on brand text */
 
       .brand-labs {
         font-size: clamp(12px, 1.8vw, 18px);
@@ -812,70 +812,6 @@
         opacity: 0.15;
       }
 
-      /* ── Letterpress: dual-layer emboss effect ──────────── */
-      /* Layer 1 (::before): paper-coloured text with outward shadow = "paper dipping down"
-         Layer 2 (element):  actual blue text sitting inside the depression */
-
-      .brand-yorke {
-        position: relative;
-        color: #0A1F33;
-      }
-
-      .brand-yorke::before {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: #A89E93;
-        -webkit-text-stroke: 3px #A89E93;
-        text-shadow:
-          0 0 4px rgba(40,28,15,0.35),
-          0 0 10px rgba(40,28,15,0.25),
-          0 0 18px rgba(40,28,15,0.16),
-          0 0 28px rgba(40,28,15,0.10),
-          0 0 40px rgba(40,28,15,0.06);
-        z-index: -1;
-        pointer-events: none;
-      }
-
-      .brand-labs .letter {
-        position: relative;
-        color: #0A1F33;
-      }
-
-      .brand-labs .letter::before {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: #A89E93;
-        -webkit-text-stroke: 2px #A89E93;
-        text-shadow:
-          0 0 3px rgba(40,28,15,0.35),
-          0 0 7px rgba(40,28,15,0.25),
-          0 0 13px rgba(40,28,15,0.16),
-          0 0 20px rgba(40,28,15,0.10),
-          0 0 30px rgba(40,28,15,0.06);
-        z-index: -1;
-        pointer-events: none;
-      }
-
-      /* Remove emboss in dark mode — clean flat text */
-      body.dark-mode .brand-yorke {
-        color: var(--color-primary);
-      }
-
-      body.dark-mode .brand-yorke::before {
-        display: none;
-      }
-
-      body.dark-mode .brand-labs .letter {
-        color: var(--color-primary);
-      }
-
-      body.dark-mode .brand-labs .letter::before {
-        display: none;
-      }
 
       /* ── Responsive ─────────────────────────────────── */
       @media (max-width: 480px) {
@@ -893,8 +829,8 @@
     <!-- Hero: full viewport, brand centred -->
     <section class="hero">
       <div class="brand">
-        <span class="brand-yorke" id="brand-yorke" data-text="Yorke">Yorke</span>
-        <span class="brand-labs" id="brand-labs"><span class="letter" data-text="L">L</span><span class="letter" data-text="a">a</span><span class="letter" data-text="b">b</span><span class="letter" data-text="s">s</span></span>
+        <span class="brand-yorke" id="brand-yorke">Yorke</span>
+        <span class="brand-labs" id="brand-labs"><span class="letter">L</span><span class="letter">a</span><span class="letter">b</span><span class="letter">s</span></span>
       </div>
 
       <!-- Info button -->
